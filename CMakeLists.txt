@@ -27,6 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         drawingcanvas.h drawingcanvas.cpp
         mainwindow.h mainwindow.cpp
+        CustomMatrix.h
 
     )
 # Define target properties for Android with Qt 6 as:

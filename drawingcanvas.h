@@ -9,8 +9,11 @@
 #include <iostream>
 #include <iomanip>
 #include <QPixmap>
+#include "CustomMatrix.h"
 
 using namespace std;
+using Array3x3 = std::array<std::array<bool, 3>, 3>;
+
 
 class DrawingCanvas : public QWidget
 {
