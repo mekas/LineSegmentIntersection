@@ -16,23 +16,31 @@ void DrawingCanvas::clearPoints(){
 void DrawingCanvas::paintLines(){
     /* Todo
      * Implement lines drawing per even pair
-
-    QPainter painter(this);
-
-    // Create a QPen to define the line's properties (color, width, style).
-    QPen pen;
-    pen.setColor(Qt::red);
-    pen.setWidth(4); // 4-pixel wide line
-    pen.setStyle(Qt::SolidLine);
-
-    // Set the painter's pen to our custom pen.
-    painter.setPen(pen);
-
-    // Draw the line. The coordinates are relative to the top-left
-    // corner of the widget (0, 0). The line goes from (50, 50)
-    // to (350, 250).
-    painter.drawLine(50, 50, 350, 250);
     */
+
+    isPaintLinesClicked = true;
+
+    update();
+    //isPaintLinesClicked = false;
+}
+
+void DrawingCanvas::segmentDetection(){
+    QPixmap pixmap = this->grab(); //
+    QImage image = pixmap.toImage();
+
+    cout << "image width" << image.width() << endl;
+    cout << "image height" << image.height() << endl;
+
+    // Get the pixel value as an ARGB integer (QRgb is a typedef for unsigned int)
+    for(int i = 1; i < image.width()-1;i++){
+        for(int j = 1; j < image.height()-1;j++){
+            QRgb rgbValue = image.pixel(i, j);
+
+            cout << "(" << i << "," << j << "): " << hex << showbase << rgbValue << endl;
+            //cout << "isWhite " << (rgbValue == 0xffffffff) << endl;
+        }
+    }
+
 }
 
 void DrawingCanvas::paintEvent(QPaintEvent *event){
@@ -47,6 +55,27 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
     // Draw a small circle at each stored point
     for (const QPoint& point : m_points) {
         painter.drawEllipse(point, 3, 3);
+    }
+
+    if(isPaintLinesClicked){
+        cout << "paint lines block is called" << endl;
+        pen.setColor(Qt::red);
+        pen.setWidth(4); // 4-pixel wide line
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+
+        // Set the painter's pen to our custom pen.
+        painter.setPen(pen);
+
+        for(int i=0;i<m_points.size();i+=2){
+            //cout << m_points[i].x() << endl;
+            painter.drawLine(m_points[i], m_points[i+1]);
+        }
+        isPaintLinesClicked = false;
+
+        //return painter pen to blue
+        pen.setColor(Qt::blue);
+        painter.setPen(pen);
     }
 }
 
