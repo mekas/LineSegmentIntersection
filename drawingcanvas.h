@@ -15,6 +15,9 @@ using namespace std;
 class DrawingCanvas : public QWidget
 {
     Q_OBJECT
+private:
+    const int WINDOW_WIDTH=600;
+    const int WINDOW_HEIGHT=400;
 
 public:
     explicit DrawingCanvas(QWidget *parent = nullptr);

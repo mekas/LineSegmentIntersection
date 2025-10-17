@@ -2,7 +2,7 @@
 
 DrawingCanvas::DrawingCanvas(QWidget *parent)  {
     // Set a minimum size for the canvas
-    setMinimumSize(400, 300);
+    setMinimumSize(this->WINDOW_WIDTH, this->WINDOW_HEIGHT);
     // Set a solid background color
     setStyleSheet("background-color: white; border: 1px solid gray;");
 }
@@ -19,9 +19,7 @@ void DrawingCanvas::paintLines(){
     */
 
     isPaintLinesClicked = true;
-
     update();
-    //isPaintLinesClicked = false;
 }
 
 void DrawingCanvas::segmentDetection(){
@@ -53,7 +51,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
     painter.setBrush(QBrush(Qt::blue));
 
     // Draw a small circle at each stored point
-    for (const QPoint& point : m_points) {
+    for (const QPoint& point : std::as_const(m_points)) {
         painter.drawEllipse(point, 3, 3);
     }
 
@@ -67,7 +65,7 @@ void DrawingCanvas::paintEvent(QPaintEvent *event){
         // Set the painter's pen to our custom pen.
         painter.setPen(pen);
 
-        for(int i=0;i<m_points.size();i+=2){
+        for(int i=0;i<m_points.size()-1;i+=2){
             //cout << m_points[i].x() << endl;
             painter.drawLine(m_points[i], m_points[i+1]);
         }
