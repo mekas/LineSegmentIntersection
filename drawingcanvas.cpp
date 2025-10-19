@@ -29,32 +29,27 @@ void DrawingCanvas::segmentDetection(){
     cout << "image width " << image.width() << endl;
     cout << "image height " << image.height() << endl;
 
-    //CustomMatrix mat;
-    //mat.fillMatrix(x);
-    vector<CustomMatrix> windows;
-    //windows.push_back(mat);
+    //To not crash we set initial size of the matrix
+    vector<CustomMatrix> windows(image.width()*image.height());
 
     // Get the pixel value as an ARGB integer (QRgb is a typedef for unsigned int)
     for(int i = 1; i < image.width()-1;i++){
         for(int j = 1; j < image.height()-1;j++){
-            bool x[3][3] = {false};
+            bool local_window[3][3] = {false};
 
             for(int m=-1;m<=1;m++){
                 for(int n=-1;n<=1;n++){
                     QRgb rgbValue = image.pixel(i+m, j+n);
-                    x[m+1][n+1] = (rgbValue != 0xffffffff);
+                    local_window[m+1][n+1] = (rgbValue != 0xffffffff);
                 }
             }
 
-            CustomMatrix mat;
-            mat.fillMatrix(x);
-            windows.push_back(mat);
+            CustomMatrix mat(local_window);
 
-            //cout << "(" << i << "," << j << "): " << hex << showbase << rgbValue << endl;
-            //cout << "isWhite " << (rgbValue == 0xffffffff) << endl;
+            windows.push_back(mat);
         }
     }
-
+    return;
 }
 
 void DrawingCanvas::paintEvent(QPaintEvent *event){
